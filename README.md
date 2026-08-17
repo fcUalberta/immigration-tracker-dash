@@ -2,7 +2,7 @@
 
 A real-time, Bloomberg-terminal-style dashboard that pulls **live USCIS quarterly data** to track immigration form backlogs, processing times, approval/denial trends, and the visa bulletin -- all in one place.
 
-![Overview Tab](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/screenshots/overview.jpg)
+![Overview](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/01-overview.jpg)
 
 ---
 
@@ -11,11 +11,11 @@ A real-time, Bloomberg-terminal-style dashboard that pulls **live USCIS quarterl
 | Tab | What it shows |
 |---|---|
 | **Backlog Overview** | Total pending cases (11.7M+), completions, avg wait time, top-10 forms horizontal bar chart, full form-breakdown table |
-| **Processing Time Estimator** | Per-form processing time estimates with historical comparison |
+| **Processing Time Estimator** | Structural wait estimates vs USCIS published ranges, with a "reality gap" callout |
 | **RFE & Approval Scrutiny** | Approval/denial rate trends by form type (I-129, I-140, I-485, etc.), including modeled RFE rates |
-| **Visa Bulletin Tracker** | Current priority dates for family and employment-based preference categories |
-| **Court & Enforcement Backlog** | Immigration court pending caseload and enforcement metrics |
-| **Historical Trend Explorer** | Multi-form line charts across 6+ USCIS fiscal quarters |
+| **Visa Bulletin Tracker** | Current priority dates for EB-1, EB-2, and EB-3 preference categories by country |
+| **Court & Enforcement Backlog** | 1.6M+ pending immigration court cases by jurisdiction, with avg wait time |
+| **Historical Trend Explorer** | Multi-form line charts across 6 USCIS fiscal quarters |
 
 ---
 
@@ -34,10 +34,28 @@ Data is fetched **directly from USCIS** on server startup and refreshed every 24
 ## Screenshots
 
 ### Backlog Overview
-
-![Backlog Overview](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/screenshots/overview.jpg)
-
+![Backlog Overview](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/01-overview.jpg)
 *11.7M+ pending cases across 34 form types. Horizontal grouped bar chart shows top 10 forms by pending volume vs quarterly completions.*
+
+### Processing Time Estimator
+![Processing Time](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/02-processing-time.jpg)
+*Structural wait times calculated from actual pending counts vs throughput -- often far exceeding USCIS published ranges.*
+
+### RFE and Approval Scrutiny
+![RFE Trends](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/03-rfe-trends.jpg)
+*Approval and denial rate trends from live USCIS data, plus modeled RFE rates per form type.*
+
+### Visa Bulletin Tracker
+![Visa Bulletin](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/04-visa-bulletin.jpg)
+*Priority date movement for EB-1, EB-2, EB-3 by country, with monthly movement chart.*
+
+### Court and Enforcement Backlog
+![Court Backlog](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/05-court-backlog.jpg)
+*1.6M+ pending immigration court cases. Top 15 jurisdictions by volume with year-over-year trend.*
+
+### Historical Trend Explorer
+![Historical](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/06-historical.jpg)
+*Multi-form pending volume trends across 6 USCIS fiscal quarters (FY2024 Q1 through FY2025 Q3).*
 
 ---
 
@@ -62,6 +80,7 @@ Data is fetched **directly from USCIS** on server startup and refreshed every 24
 │   ├── immigration-tracker/       # React + Vite frontend
 │   │   └── src/
 │   │       ├── App.tsx
+│   │       ├── pages/Dashboard.tsx
 │   │       ├── tabs/
 │   │       │   ├── TabBacklogOverview.tsx
 │   │       │   ├── TabProcessingTime.tsx
