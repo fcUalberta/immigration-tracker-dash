@@ -1,0 +1,1 @@
+- [USCIS live data access](uscis-data-access.md) — XLSX files are fetchable; egov.uscis.gov and travel.state.gov are Cloudflare-blocked from server-side
