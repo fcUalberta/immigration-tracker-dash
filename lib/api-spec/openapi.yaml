@@ -1,0 +1,439 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: US Immigration Backlog Tracker API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: backlog
+    description: Immigration backlog data
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /backlog/summary:
+    get:
+      operationId: getBacklogSummary
+      tags: [backlog]
+      summary: Top-level summary stats across all form types
+      responses:
+        "200":
+          description: Summary stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BacklogSummary"
+
+  /backlog/overview:
+    get:
+      operationId: getBacklogOverview
+      tags: [backlog]
+      summary: Backlog overview by form type
+      parameters:
+        - name: formType
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [I-765, I-130, I-140, I-485, I-526, I-131, I-751, I-90]
+      responses:
+        "200":
+          description: Backlog overview data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BacklogRecord"
+
+  /backlog/processing-time:
+    get:
+      operationId: getProcessingTime
+      tags: [backlog]
+      summary: Processing time estimates by form type
+      parameters:
+        - name: formType
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Processing time estimates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProcessingTimeEstimate"
+
+  /backlog/rfe-trends:
+    get:
+      operationId: getRfeTrends
+      tags: [backlog]
+      summary: RFE and approval rate trends by form type
+      parameters:
+        - name: formType
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: RFE and approval trends
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RfeTrendRecord"
+
+  /backlog/visa-bulletin:
+    get:
+      operationId: getVisaBulletin
+      tags: [backlog]
+      summary: Visa bulletin priority date movement by category and country
+      responses:
+        "200":
+          description: Visa bulletin data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VisaBulletinData"
+
+  /backlog/court:
+    get:
+      operationId: getCourtBacklog
+      tags: [backlog]
+      summary: Immigration court backlogs by jurisdiction
+      responses:
+        "200":
+          description: Court backlog data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CourtBacklogRecord"
+
+  /backlog/historical:
+    get:
+      operationId: getHistoricalTrends
+      tags: [backlog]
+      summary: Historical trend data for chart builder
+      parameters:
+        - name: metric
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [pending_volume, rfe_rate, completion_rate, approval_rate]
+        - name: formType
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: startYear
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: endYear
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Historical trend data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HistoricalTrendData"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    BacklogSummary:
+      type: object
+      required:
+        - totalPendingAllForms
+        - totalCompletionsLastQuarter
+        - avgWaitMonths
+        - formsWithGrowingBacklog
+        - lastUpdated
+        - quarterLabel
+        - overallTrend
+        - overallTrendPct
+      properties:
+        totalPendingAllForms:
+          type: number
+        totalCompletionsLastQuarter:
+          type: number
+        avgWaitMonths:
+          type: number
+        formsWithGrowingBacklog:
+          type: number
+        lastUpdated:
+          type: string
+        quarterLabel:
+          type: string
+        overallTrend:
+          type: string
+          enum: [up, down, flat]
+        overallTrendPct:
+          type: number
+
+    BacklogRecord:
+      type: object
+      required:
+        - formType
+        - formName
+        - pendingCount
+        - completionsLastQuarter
+        - completionsPrevQuarter
+        - netChangePct
+        - trend
+        - fiscalYear
+        - quarter
+        - dataSource
+      properties:
+        formType:
+          type: string
+        formName:
+          type: string
+        pendingCount:
+          type: number
+        completionsLastQuarter:
+          type: number
+        completionsPrevQuarter:
+          type: number
+        netChangePct:
+          type: number
+        trend:
+          type: string
+          enum: [up, down, flat]
+        fiscalYear:
+          type: number
+        quarter:
+          type: number
+        dataSource:
+          type: string
+
+    ProcessingTimeEstimate:
+      type: object
+      required:
+        - formType
+        - formName
+        - pendingCount
+        - avgQuarterlyCompletions
+        - estimatedWaitMonths
+        - uscisPublishedMinMonths
+        - uscisPublishedMaxMonths
+        - methodology
+        - dataSource
+      properties:
+        formType:
+          type: string
+        formName:
+          type: string
+        pendingCount:
+          type: number
+        avgQuarterlyCompletions:
+          type: number
+        estimatedWaitMonths:
+          type: number
+        uscisPublishedMinMonths:
+          type: number
+        uscisPublishedMaxMonths:
+          type: number
+        methodology:
+          type: string
+        dataSource:
+          type: string
+        serviceCenter:
+          type: ["string", "null"]
+
+    RfeTrendRecord:
+      type: object
+      required:
+        - formType
+        - fiscalYear
+        - quarter
+        - quarterLabel
+        - rfeRate
+        - approvalRate
+        - denialRate
+        - dataSource
+      properties:
+        formType:
+          type: string
+        fiscalYear:
+          type: number
+        quarter:
+          type: number
+        quarterLabel:
+          type: string
+        rfeRate:
+          type: number
+        approvalRate:
+          type: number
+        denialRate:
+          type: number
+        dataSource:
+          type: string
+
+    VisaBulletinData:
+      type: object
+      required:
+        - categories
+        - months
+        - dataSource
+        - lastUpdated
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/VisaCategory"
+        months:
+          type: array
+          items:
+            type: string
+        dataSource:
+          type: string
+        lastUpdated:
+          type: string
+
+    VisaCategory:
+      type: object
+      required:
+        - category
+        - label
+        - countries
+      properties:
+        category:
+          type: string
+        label:
+          type: string
+        countries:
+          type: array
+          items:
+            $ref: "#/components/schemas/CountryPriorityDates"
+
+    CountryPriorityDates:
+      type: object
+      required:
+        - country
+        - priorityDates
+        - movementMonths
+      properties:
+        country:
+          type: string
+        priorityDates:
+          type: array
+          items:
+            type: ["string", "null"]
+        movementMonths:
+          type: array
+          items:
+            type: ["number", "null"]
+
+    CourtBacklogRecord:
+      type: object
+      required:
+        - jurisdiction
+        - state
+        - pendingCases
+        - avgWaitYears
+        - completionsLastYear
+        - changeFromPriorYear
+        - dataSource
+      properties:
+        jurisdiction:
+          type: string
+        state:
+          type: string
+        pendingCases:
+          type: number
+        avgWaitYears:
+          type: number
+        completionsLastYear:
+          type: number
+        changeFromPriorYear:
+          type: number
+        dataSource:
+          type: string
+
+    HistoricalTrendData:
+      type: object
+      required:
+        - metric
+        - metricLabel
+        - series
+        - dataSource
+      properties:
+        metric:
+          type: string
+        metricLabel:
+          type: string
+        series:
+          type: array
+          items:
+            $ref: "#/components/schemas/HistoricalSeries"
+        dataSource:
+          type: string
+
+    HistoricalSeries:
+      type: object
+      required:
+        - formType
+        - formName
+        - dataPoints
+      properties:
+        formType:
+          type: string
+        formName:
+          type: string
+        dataPoints:
+          type: array
+          items:
+            $ref: "#/components/schemas/HistoricalDataPoint"
+
+    HistoricalDataPoint:
+      type: object
+      required:
+        - fiscalYear
+        - quarter
+        - quarterLabel
+        - value
+      properties:
+        fiscalYear:
+          type: number
+        quarter:
+          type: number
+        quarterLabel:
+          type: string
+        value:
+          type: number
