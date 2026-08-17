@@ -1,8 +1,6 @@
 # US Immigration Backlog Tracker
 
-A real-time, Bloomberg-terminal-style dashboard that pulls **live USCIS quarterly data** to track immigration form backlogs, processing times, approval/denial trends, and the visa bulletin -- all in one place.
-
-![Overview](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/01-overview.jpg)
+A real-time, Bloomberg-terminal-style dashboard that pulls **live USCIS quarterly data** to track immigration form backlogs, processing times, approval/denial trends, and the visa bulletin - all in one place.
 
 ---
 
@@ -34,27 +32,27 @@ Data is fetched **directly from USCIS** on server startup and refreshed every 24
 ## Screenshots
 
 ### Backlog Overview
-![Backlog Overview](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/01-overview.jpg)
+![Backlog Overview](screenshots/Overview.png)
 *11.7M+ pending cases across 34 form types. Horizontal grouped bar chart shows top 10 forms by pending volume vs quarterly completions.*
 
 ### Processing Time Estimator
-![Processing Time](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/02-processing-time.jpg)
+![Processing Time](screenshots/ProcessingTime.png)
 *Structural wait times calculated from actual pending counts vs throughput -- often far exceeding USCIS published ranges.*
 
 ### RFE and Approval Scrutiny
-![RFE Trends](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/03-rfe-trends.jpg)
+![RFE Trends](screenshots/RFETrends.png)
 *Approval and denial rate trends from live USCIS data, plus modeled RFE rates per form type.*
 
 ### Visa Bulletin Tracker
-![Visa Bulletin](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/04-visa-bulletin.jpg)
+![Visa Bulletin](screenshots/VisaBulletinTracker.png)
 *Priority date movement for EB-1, EB-2, EB-3 by country, with monthly movement chart.*
 
 ### Court and Enforcement Backlog
-![Court Backlog](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/05-court-backlog.jpg)
+![Court Backlog](screenshots/CourtBacklog.png)
 *1.6M+ pending immigration court cases. Top 15 jurisdictions by volume with year-over-year trend.*
 
 ### Historical Trend Explorer
-![Historical](https://raw.githubusercontent.com/fcUalberta/immigration-tracker-dash/main/docs/screenshots/06-historical.jpg)
+![Historical](screenshots/Historical.png)
 *Multi-form pending volume trends across 6 USCIS fiscal quarters (FY2024 Q1 through FY2025 Q3).*
 
 ---
